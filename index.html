@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiClub - Acompañamiento Consciente</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Montserrat:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- React & Babel for Standalone execution -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #c38b8b;
+            /* Dusty Rose */
+        }
+
+        h1,
+        h2,
+        h3,
+        .serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .bg-dusty-rose {
+            background-color: #c38b8b;
+        }
+
+        .text-dusty-rose {
+            color: #c38b8b;
+        }
+
+        .bg-gold {
+            background-color: #c8a966;
+        }
+
+        .text-gold {
+            color: #c8a966;
+        }
+
+        .border-gold {
+            border-color: #c8a966;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-overlay {
+            background: linear-gradient(to bottom, rgba(195, 139, 139, 0.4), rgba(195, 139, 139, 0.9));
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #c38b8b;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #c8a966;
+            border-radius: 10px;
+        }
+    </style>
+    <link rel="stylesheet" href="/index.css">
+</head>
+
+<body class="text-white">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- Configuration & Constants ---
+        const BENEFITS = [
+            "Mensajes privados y reflexiones profundas",
+            "Acompañamiento y seguimiento personalizado",
+            "Zooms privados con Marina",
+            "Zooms con especialistas en nutrición",
+            "Contenido exclusivo semanal",
+            "Herramientas prácticas para hábitos",
+            "Recetas únicas y saludables",
+            "Comunidad de apoyo entre mujeres"
+        ];
+
+        // --- Simple UI Components ---
+        const Button = ({ children, onClick, className = "", variant = 'gold' }) => {
+            const baseStyles = "px-8 py-3 rounded-full transition-all duration-300 font-semibold text-sm uppercase tracking-widest shadow-lg hover:scale-105 active:scale-95";
+            const variants = {
+                gold: "bg-[#c8a966] text-white hover:bg-[#b5985b]",
+                outline: "border-2 border-white text-white hover:bg-white hover:text-[#c38b8b]"
+            };
+            return (
+                <button onClick={onClick} className={`${baseStyles} ${variants[variant]} ${className}`}>
+                    {children}
+                </button>
+            );
+        };
+
+        const ButterflyIcon = () => (
+            <span className="text-xl mr-3 text-gold">🦋</span>
+        );
+
+        // --- AI Personal Greeting Component ---
+        const AIAssistant = () => {
+            const [name, setName] = useState('');
+            const [interest, setInterest] = useState('');
+            const [message, setMessage] = useState('');
+            const [loading, setLoading] = useState(false);
+
+            const handleAsk = async (e) => {
+                e.preventDefault();
+                if (!name || !interest) return;
+                setLoading(true);
+
+                try {
+                    // Dynamic import for standalone use
+                    const { GoogleGenAI } = await import('https://esm.sh/@google/genai');
+                    const ai = new GoogleGenAI({ apiKey: window.process?.env?.API_KEY || '' });
+
+                    const response = await ai.models.generateContent({
+                        model: 'gemini-3-flash-preview',
+                        contents: `Escribe un mensaje de bienvenida corto y cálido para ${name} que busca "${interest}" en MiClub. Tono amoroso, empoderador, elegante. Máximo 2 líneas.`,
+                    });
+
+                    setMessage(response.text || "Bienvenida a este espacio sagrado.");
+                } catch (err) {
+                    console.error(err);
+                    setMessage(`Bienvenida ${name}, estamos aquí para acompañarte en tu camino de bienestar.`);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            return (
+                <div className="glass p-8 rounded-3xl max-w-2xl mx-auto my-12 shadow-2xl">
+                    <h3 className="text-2xl font-bold mb-6 text-center serif italic">Tu Mensaje de Bienvenida</h3>
+                    {!message ? (
+                        <form onSubmit={handleAsk} className="space-y-4">
+                            <input
+                                type="text"
+                                placeholder="Tu nombre"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                className="w-full p-4 rounded-xl bg-white/10 border border-white/20 placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-gold"
+                            />
+                            <input
+                                type="text"
+                                placeholder="¿Qué te gustaría mejorar hoy? (ej. nutrición, paz mental)"
+                                value={interest}
+                                onChange={(e) => setInterest(e.target.value)}
+                                className="w-full p-4 rounded-xl bg-white/10 border border-white/20 placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-gold"
+                            />
+                            <Button className="w-full" variant="gold">
+                                {loading ? 'Creando algo especial...' : 'Recibir Mensaje'}
+                            </Button>
+                        </form>
+                    ) : (
+                        <div className="text-center animate-fade-in">
+                            <p className="text-xl italic leading-relaxed mb-6 font-medium">"{message}"</p>
+                            <button onClick={() => setMessage('')} className="text-xs uppercase tracking-widest underline opacity-60 hover:opacity-100">
+                                Volver a empezar
+                            </button>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        // --- Main App Component ---
+        const App = () => {
+            return (
+                <div className="min-h-screen">
+                    {/* Nav */}
+                    <nav className="fixed top-0 w-full z-50 glass px-6 py-4 flex justify-between items-center">
+                        <div className="flex items-center space-x-3">
+                            <img src="fotos/Copia de logo dorado.png" alt="Logo" className="w-12 h-12 object-contain" />
+                            <span className="serif font-bold text-xl tracking-tight">MiClub</span>
+                        </div>
+                        <div className="hidden md:flex space-x-8 text-[10px] uppercase tracking-widest font-bold">
+                            <a href="#welcome" className="hover:text-gold">Inicio</a>
+                            <a href="#about" className="hover:text-gold">Propósito</a>
+                            <a href="#benefits" className="hover:text-gold">Beneficios</a>
+                        </div>
+                        <Button className="scale-75 md:scale-90" variant="gold">Unirme</Button>
+                    </nav>
+
+                    {/* Hero */}
+                    <header className="relative h-screen flex items-center justify-center overflow-hidden">
+                        <img
+                            src="fotos/Marina-129.jpg"
+                            alt="Femenine workspace"
+                            className="absolute inset-0 w-full h-full object-cover"
+                            style={{ objectPosition: 'center 20%' }}
+                        />
+                        <div className="absolute inset-0 hero-overlay"></div>
+                        <div className="relative z-10 text-center px-4 max-w-4xl">
+                            <p className="uppercase tracking-[0.4em] text-xs mb-4 animate-fade-in">Exclusivo para mujeres</p>
+                            <h1 className="text-6xl md:text-9xl mb-6 serif italic font-light animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                                MiClub
+                            </h1>
+                            <p className="text-lg md:text-xl font-light tracking-wide mb-10 opacity-90 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+                                El lugar donde el bienestar se siente real y compartido.
+                            </p>
+                            <div className="animate-fade-in" style={{ animationDelay: '0.6s' }}>
+                                <Button onClick={() => document.getElementById('welcome').scrollIntoView({ behavior: 'smooth' })}>
+                                    Quiero Saber Más
+                                </Button>
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* Section 1: Welcome */}
+                    <section id="welcome" className="py-24 px-6 md:px-12 max-w-4xl mx-auto text-center">
+                        <h2 className="text-4xl md:text-6xl mb-12 serif leading-tight">
+                            Un espacio para <br />
+                            <span className="italic">volver a vos</span>
+                        </h2>
+                        <div className="space-y-8 text-lg md:text-xl font-light leading-relaxed opacity-90">
+                            <p>
+                                MiClub no es solo una membresía. Es un refugio. Un lugar donde bajamos el ritmo,
+                                nos escuchamos y aprendemos a cuidarnos de forma amorosa y consciente.
+                            </p>
+                            <p>
+                                Aquí no hay presiones de perfección. Hay acompañamiento real para
+                                construir hábitos que duren, nutrición que sane y una comunidad que sostenga.
+                            </p>
+                        </div>
+                    </section>
+
+                    {/* Section 2: AI Interaction */}
+                    <section className="py-12 px-6 bg-white/5">
+                        <div className="max-w-4xl mx-auto text-center mb-10">
+                            <h2 className="text-3xl serif italic mb-4">Empecemos por saludarte</h2>
+                            <p className="text-sm uppercase tracking-widest opacity-70">Personaliza tu experiencia</p>
+                        </div>
+                        <AIAssistant />
+                    </section>
+
+                    {/* Section 3: About/Image */}
+                    <section id="about" className="py-24 px-6 md:px-12">
+                        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+                            <div className="relative group">
+                                <div className="absolute -inset-4 bg-gold/20 rounded-3xl blur-2xl group-hover:bg-gold/30 transition-all"></div>
+                                <img
+                                    src="fotos/portada Miclub2.png"
+                                    alt="Healthy lifestyle"
+                                    className="relative rounded-3xl shadow-2xl w-full aspect-[4/5] object-cover"
+                                />
+                            </div>
+                            <div className="space-y-8">
+                                <h2 className="text-4xl serif italic">Nuestra Filosofía</h2>
+                                <p className="text-xl font-light opacity-90 leading-relaxed">
+                                    "La salud no es un destino, es un camino que se transita mejor acompañada.
+                                    En MiClub, transformamos la teoría en práctica cotidiana."
+                                </p>
+                                <ul className="space-y-4">
+                                    {['Presencia', 'Consciencia', 'Sostenibilidad', 'Amor Propio'].map(item => (
+                                        <li key={item} className="flex items-center text-lg font-medium">
+                                            <ButterflyIcon /> {item}
+                                        </li>
+                                    ))}
+                                </ul>
+                                <Button variant="gold" className="mt-6">Unirme a la comunidad</Button>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Section 4: Benefits Grid */}
+                    <section id="benefits" className="py-24 px-6 bg-white/5">
+                        <div className="max-w-6xl mx-auto">
+                            <div className="text-center mb-16">
+                                <h2 className="text-5xl serif mb-4 italic">Lo que recibes</h2>
+                                <p className="text-sm uppercase tracking-[0.3em] opacity-60">Beneficios Exclusivos</p>
+                            </div>
+                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                                {BENEFITS.map((benefit, i) => (
+                                    <div key={i} className="glass p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300">
+                                        <ButterflyIcon />
+                                        <p className="mt-4 font-light text-lg">{benefit}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Final CTA */}
+                    <section className="py-32 px-6 text-center bg-gold text-white relative overflow-hidden">
+                        <div className="relative z-10 max-w-3xl mx-auto">
+                            <h2 className="text-4xl md:text-6xl serif italic mb-8">¿Lista para comenzar?</h2>
+                            <p className="text-xl font-light mb-12 opacity-90 leading-relaxed">
+                                Súmate hoy a MiClub y empieza a vivir un acompañamiento que transforma desde adentro hacia afuera.
+                            </p>
+                            <Button variant="outline" className="!bg-white !text-gold hover:!bg-[#fdfcfb] text-lg px-12 py-4">
+                                Reservar Mi Lugar
+                            </Button>
+                        </div>
+                        {/* Decorative circles */}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+                        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24"></div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer className="py-16 px-6 text-center opacity-60">
+                        <div className="serif text-3xl mb-4 italic">MiClub</div>
+                        <p className="text-xs uppercase tracking-widest mb-8">Marina Borensztein • Acompañamiento Consciente</p>
+                        <div className="flex justify-center space-x-6 mb-8 text-sm font-bold uppercase tracking-widest">
+                            <a href="#" className="hover:text-gold">Instagram</a>
+                            <a href="#" className="hover:text-gold">Contacto</a>
+                            <a href="#" className="hover:text-gold">Términos</a>
+                        </div>
+                        <p className="text-[10px]">&copy; {new Date().getFullYear()} MiClub. Hecho con amor para vos.</p>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+    <script type="module" src="/index.tsx"></script>
+</body>
+
+</html>
