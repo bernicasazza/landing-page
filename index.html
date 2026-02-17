@@ -25,8 +25,8 @@
         body {
             font-family: 'Montserrat', sans-serif;
             scroll-behavior: smooth;
-            background-color: #c38b8b;
-            /* Dusty Rose */
+            background-color: #fff5f7;
+            /* Very Light Pink */
         }
 
         h1,
@@ -73,13 +73,14 @@
         }
 
         .glass {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(195, 139, 139, 0.2);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
 
         .hero-overlay {
-            background: linear-gradient(to bottom, rgba(195, 139, 139, 0.4), rgba(195, 139, 139, 0.9));
+            background: linear-gradient(to bottom, rgba(195, 139, 139, 0.2), rgba(195, 139, 139, 0.6));
         }
 
         /* Custom Scrollbar */
@@ -99,7 +100,7 @@
     <link rel="stylesheet" href="/index.css">
 </head>
 
-<body class="text-white">
+<body class="text-[#7d4e4e]">
     <div id="root"></div>
 
     <script type="text/babel">
@@ -107,14 +108,14 @@
 
         // --- Configuration & Constants ---
         const BENEFITS = [
-            "Mensajes privados y reflexiones profundas",
-            "Acompañamiento y seguimiento personalizado",
+            "Comunidad de apoyo entre mujeres",
+            "Oro en cartas a tu disposición",
             "Zooms privados con Marina",
-            "Zooms con especialistas en nutrición",
+            "Zooms y respuestas con nuestra nutricionista estrella, Laura Serna",
             "Contenido exclusivo semanal",
-            "Herramientas prácticas para hábitos",
+            "Multiples herramientas: actividad fisica, meditaciones, lecturas, etc.",
             "Recetas únicas y saludables",
-            "Comunidad de apoyo entre mujeres"
+            "Frases inspiradoras cada día"
         ];
 
         // --- Simple UI Components ---
@@ -132,7 +133,7 @@
         };
 
         const ButterflyIcon = () => (
-            <span className="text-xl mr-3 text-gold">🦋</span>
+            <img src="fotos/logo dorado 28.png" alt="Butterfly" className="w-6 h-6 mr-3 object-contain inline-block" />
         );
 
         // --- AI Personal Greeting Component ---
@@ -176,14 +177,14 @@
                                 placeholder="Tu nombre"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                className="w-full p-4 rounded-xl bg-white/10 border border-white/20 placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-gold"
+                                className="w-full p-4 rounded-xl bg-white/50 border border-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold"
                             />
                             <input
                                 type="text"
                                 placeholder="¿Qué te gustaría mejorar hoy? (ej. nutrición, paz mental)"
                                 value={interest}
                                 onChange={(e) => setInterest(e.target.value)}
-                                className="w-full p-4 rounded-xl bg-white/10 border border-white/20 placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-gold"
+                                className="w-full p-4 rounded-xl bg-white/50 border border-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold"
                             />
                             <Button className="w-full" variant="gold">
                                 {loading ? 'Creando algo especial...' : 'Recibir Mensaje'}
@@ -222,13 +223,13 @@
                     {/* Hero */}
                     <header className="relative h-screen flex items-center justify-center overflow-hidden">
                         <img
-                            src="fotos/Marina-129.jpg"
+                            src="fotos/Marina 2025playa.jpg"
                             alt="Femenine workspace"
                             className="absolute inset-0 w-full h-full object-cover"
-                            style={{ objectPosition: 'center 20%' }}
+                            style={{ objectPosition: 'center 30%' }}
                         />
                         <div className="absolute inset-0 hero-overlay"></div>
-                        <div className="relative z-10 text-center px-4 max-w-4xl">
+                        <div className="relative z-10 text-center px-4 max-w-4xl text-white">
                             <p className="uppercase tracking-[0.4em] text-xs mb-4 animate-fade-in">Exclusivo para mujeres</p>
                             <h1 className="text-6xl md:text-9xl mb-6 serif italic font-light animate-fade-in" style={{ animationDelay: '0.2s' }}>
                                 MiClub
@@ -252,8 +253,8 @@
                         </h2>
                         <div className="space-y-8 text-lg md:text-xl font-light leading-relaxed opacity-90">
                             <p>
-                                MiClub no es solo una membresía. Es un refugio. Un lugar donde bajamos el ritmo,
-                                nos escuchamos y aprendemos a cuidarnos de forma amorosa y consciente.
+                                MiClub es un refugio, un espacio que nace del deseo profundo de estar
+                                más cerca, de escucharnos, compartir lo que nos pasa y crecer juntas.
                             </p>
                             <p>
                                 Aquí no hay presiones de perfección. Hay acompañamiento real para
@@ -263,7 +264,7 @@
                     </section>
 
                     {/* Section 2: AI Interaction */}
-                    <section className="py-12 px-6 bg-white/5">
+                    <section className="py-12 px-6 bg-white/40">
                         <div className="max-w-4xl mx-auto text-center mb-10">
                             <h2 className="text-3xl serif italic mb-4">Empecemos por saludarte</h2>
                             <p className="text-sm uppercase tracking-widest opacity-70">Personaliza tu experiencia</p>
@@ -285,11 +286,12 @@
                             <div className="space-y-8">
                                 <h2 className="text-4xl serif italic">Nuestra Filosofía</h2>
                                 <p className="text-xl font-light opacity-90 leading-relaxed">
-                                    "La salud no es un destino, es un camino que se transita mejor acompañada.
-                                    En MiClub, transformamos la teoría en práctica cotidiana."
+                                    "La vida es un camino que se transita mejor acompañada.
+                                    En MiClub, transformamos el deseo de sanar en hábitos reales, cotidianos y sostenibles.
+                                    Porque crecer, cuidarnos y despertar conciencia es mucho más poderoso cuando lo hacemos juntas."
                                 </p>
                                 <ul className="space-y-4">
-                                    {['Presencia', 'Consciencia', 'Sostenibilidad', 'Amor Propio'].map(item => (
+                                    {['Presencia', 'Consciencia', 'Contención', 'Volver a tu esencia'].map(item => (
                                         <li key={item} className="flex items-center text-lg font-medium">
                                             <ButterflyIcon /> {item}
                                         </li>
@@ -301,7 +303,7 @@
                     </section>
 
                     {/* Section 4: Benefits Grid */}
-                    <section id="benefits" className="py-24 px-6 bg-white/5">
+                    <section id="benefits" className="py-24 px-6 bg-white/40">
                         <div className="max-w-6xl mx-auto">
                             <div className="text-center mb-16">
                                 <h2 className="text-5xl serif mb-4 italic">Lo que recibes</h2>
@@ -325,7 +327,7 @@
                             <p className="text-xl font-light mb-12 opacity-90 leading-relaxed">
                                 Súmate hoy a MiClub y empieza a vivir un acompañamiento que transforma desde adentro hacia afuera.
                             </p>
-                            <Button variant="outline" className="!bg-white !text-gold hover:!bg-[#fdfcfb] text-lg px-12 py-4">
+                            <Button variant="outline" className="!bg-white !text-gold hover:!bg-[#fdfcfb] text-lg px-12 py-4 shadow-lg border-transparent">
                                 Reservar Mi Lugar
                             </Button>
                         </div>
