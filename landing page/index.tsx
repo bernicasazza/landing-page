@@ -1,0 +1,1 @@
+// Lógica movida a index.html para compatibilidad con ejecución sin servidor (standalone).
