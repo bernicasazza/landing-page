@@ -168,8 +168,8 @@
             };
 
             return (
-                <div className="glass p-8 rounded-3xl max-w-2xl mx-auto my-12 shadow-2xl">
-                    <h3 className="text-2xl font-bold mb-6 text-center serif italic">Tu Mensaje de Bienvenida</h3>
+                <div className="glass p-8 rounded-3xl max-w-4xl mx-auto my-12 shadow-2xl">
+                    <h3 className="text-2xl font-bold mb-6 text-center serif italic">Déjanos tu mensaje para conocerte</h3>
                     {!message ? (
                         <form onSubmit={handleAsk} className="space-y-4">
                             <input
@@ -181,7 +181,7 @@
                             />
                             <input
                                 type="text"
-                                placeholder="¿Qué te gustaría mejorar hoy? (ej. nutrición, paz mental)"
+                                placeholder="¿Qué te gustaría mejorar hoy? (ej. nutrición, trabajo personal, emociones, paz mental, mover más el cuerpo)"
                                 value={interest}
                                 onChange={(e) => setInterest(e.target.value)}
                                 className="w-full p-4 rounded-xl bg-white/50 border border-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold"
@@ -266,7 +266,7 @@
                     {/* Section 2: AI Interaction */}
                     <section className="py-12 px-6 bg-white/40">
                         <div className="max-w-4xl mx-auto text-center mb-10">
-                            <h2 className="text-3xl serif italic mb-4">Empecemos por saludarte</h2>
+                            <h2 className="text-3xl serif italic mb-4">Bienvenida</h2>
                             <p className="text-sm uppercase tracking-widest opacity-70">Personaliza tu experiencia</p>
                         </div>
                         <AIAssistant />
