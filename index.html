@@ -132,8 +132,8 @@
             );
         };
 
-        const ButterflyIcon = () => (
-            <img src="fotos/logo dorado 28.png" alt="Butterfly" className="w-6 h-6 mr-3 object-contain inline-block" />
+        const ButterflyIcon = ({ className = "w-6 h-6" }) => (
+            <img src="fotos/logo dorado 28.png" alt="Butterfly" className={`${className} mr-3 object-contain inline-block drop-shadow-md`} />
         );
 
         // --- AI Personal Greeting Component ---
@@ -312,8 +312,10 @@
                             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                                 {BENEFITS.map((benefit, i) => (
                                     <div key={i} className="bg-[#c38b8b]/70 backdrop-blur-sm text-white p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 shadow-lg">
-                                        <ButterflyIcon />
-                                        <p className="mt-4 font-light text-lg">{benefit}</p>
+                                        <div className="mb-4">
+                                            <ButterflyIcon className="w-16 h-16" />
+                                        </div>
+                                        <p className="font-light text-lg">{benefit}</p>
                                     </div>
                                 ))}
                             </div>
